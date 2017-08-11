@@ -8,7 +8,12 @@
 // @remove-on-eject-end
 'use strict';
 
-const autoprefixer = require('autoprefixer');
+const cssnext = require('postcss-cssnext');
+const cssimport = require('postcss-import');
+const cssFluidGrid = require('postcss-grid-fluid');
+
+const HivehomeWebappFaviconsWebpackPlugin = require('@connected-home/hivehome-webapp-favicons-webpack-plugin');
+
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -19,6 +24,8 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
+
+const { languages, locales } = require('./locales');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -56,6 +63,7 @@ module.exports = {
     require.resolve('react-dev-utils/webpackHotDevClient'),
     // Finally, this is your app's code:
     paths.appIndexJs,
+    paths.appBrowserUpdateJs,
     // We include the app code last so that if there is a runtime error during
     // initialization, it doesn't blow up the WebpackDevServer client, and
     // changing JS code would still trigger a refresh.
@@ -167,7 +175,7 @@ module.exports = {
             loader: require.resolve('babel-loader'),
             options: {
               // @remove-on-eject-begin
-              babelrc: false,
+              babelrc: true,
               presets: [require.resolve('babel-preset-react-app')],
               // @remove-on-eject-end
               // This is a feature of `babel-loader` for webpack (not Babel itself).
@@ -198,16 +206,22 @@ module.exports = {
                   // https://github.com/facebookincubator/create-react-app/issues/2677
                   ident: 'postcss',
                   plugins: () => [
-                    require('postcss-flexbugs-fixes'),
-                    autoprefixer({
+                    cssimport({
+                      path: [paths.appSrc + '/assets/stylesheets/common'],
+                      onImport: function(files) {
+                        files.forEach(this.addDependency);
+                      }.bind(this),
+                    }),
+                    cssnext({
                       browsers: [
                         '>1%',
                         'last 4 versions',
                         'Firefox ESR',
                         'not ie < 9', // React doesn't support IE8 anyway
                       ],
-                      flexbox: 'no-2009',
                     }),
+                    cssFluidGrid(),
+                    require('postcss-flexbugs-fixes'),
                   ],
                 },
               },
@@ -250,7 +264,39 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
-    new webpack.DefinePlugin(env.stringified),
+    new webpack.DefinePlugin(
+      Object.assign({}, env.stringified, {
+        'process.locales': JSON.stringify(locales),
+      })
+    ),
+    // Favicons and tile icons etc
+    new HivehomeWebappFaviconsWebpackPlugin({
+      title: 'Hive Home',
+      prefix: 'static/media/[hash]-',
+      platforms: {
+        generic: {
+          source: path.join(paths.appSrc, 'assets/icons', 'favicon.png'),
+        },
+        iphone: {
+          source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
+          statusBar: 'black-translucent',
+        },
+        android: {
+          source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
+          themeColor: '#ff8600',
+          backgroundColor: '#ffffff',
+        },
+        windows: {
+          source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
+          tileColor: '#ff8600',
+        },
+      },
+    }),
+    // Whitelist `react-intl` language files we know we'll need
+    new webpack.ContextReplacementPlugin(
+      /react-intl[/\\]locale-data$/,
+      new RegExp(`^\\.[/\\\\](${languages.join('|')})$`)
+    ),
     // This is necessary to emit hot updates (currently CSS only):
     new webpack.HotModuleReplacementPlugin(),
     // Watcher doesn't work well if you mistype casing in a path so we use

@@ -17,6 +17,20 @@ const paths = require('./paths');
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
 
+function envMiddleware(req, res) {
+  const options = {
+    root: paths.appEnv,
+  };
+
+  const fileName = `${process.env.DIST_ENV}.js`;
+  res.sendFile(fileName, options, err => {
+    if (err) {
+      console.log(err);
+      res.status(err.status).end();
+    }
+  });
+}
+
 module.exports = function(proxy, allowedHost) {
   return {
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
@@ -98,6 +112,8 @@ module.exports = function(proxy, allowedHost) {
       // it used the same host and port.
       // https://github.com/facebookincubator/create-react-app/issues/2272#issuecomment-302832432
       app.use(noopServiceWorkerMiddleware());
+
+      app.use('/env.js', envMiddleware);
     },
   };
 };
