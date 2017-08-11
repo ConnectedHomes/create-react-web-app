@@ -42,6 +42,9 @@ module.exports = (resolve, rootDir, isEjecting) => {
     transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$'],
     moduleNameMapper: {
       '^react-native$': 'react-native-web',
+      '^.+\\.css$': '<rootDir>/scripts/utils/css-stub.js',
+      '^.+\\.(jpg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm)$':
+        '<rootDir>/scripts/utils/file-stub.js',
     },
     moduleFileExtensions: [
       'web.js',
