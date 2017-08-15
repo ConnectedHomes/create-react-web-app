@@ -71,7 +71,11 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs, paths.appBrowserUpdateJs],
+  entry: [
+    require.resolve('./polyfills'),
+    paths.appIndexJs,
+    paths.appBrowserUpdateJs,
+  ],
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -226,22 +230,22 @@ module.exports = {
                         // https://github.com/facebookincubator/create-react-app/issues/2677
                         ident: 'postcss',
                         plugins: () => [
-                            cssimport({
-                                  path: [paths.appSrc + '/assets/stylesheets/common'],
-                                  onImport: function (files) {
-                                      files.forEach(this.addDependency);
-                                  }.bind(this)
-                              }),
-                              cssnext({
-                                  browsers: [
-                                      '>1%',
-                                      'last 4 versions',
-                                      'Firefox ESR',
-                                      'not ie < 9' // React doesn't support IE8 anyway
-                                  ]
-                              }),
-                              cssFluidGrid(),
-                              require('postcss-flexbugs-fixes'),
+                          cssimport({
+                            path: [paths.appSrc + '/assets/stylesheets/common'],
+                            onImport: function(files) {
+                              files.forEach(this.addDependency);
+                            }.bind(this),
+                          }),
+                          cssnext({
+                            browsers: [
+                              '>1%',
+                              'last 4 versions',
+                              'Firefox ESR',
+                              'not ie < 9', // React doesn't support IE8 anyway
+                            ],
+                          }),
+                          cssFluidGrid(),
+                          require('postcss-flexbugs-fixes'),
                         ],
                       },
                     },
@@ -301,36 +305,38 @@ module.exports = {
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
-    new webpack.DefinePlugin(Object.assign({}, env.stringified, {
-        'process.locales': JSON.stringify(locales)
-    })),
+    new webpack.DefinePlugin(
+      Object.assign({}, env.stringified, {
+        'process.locales': JSON.stringify(locales),
+      })
+    ),
     // Favicons and tile icons etc
     new HivehomeWebappFaviconsWebpackPlugin({
-        title: 'Hive Home',
-        prefix: 'static/media/[hash]-',
-        platforms: {
-            generic: {
-                source: path.join(paths.appSrc, 'assets/icons', 'favicon.png')
-            },
-            iphone: {
-                source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
-                statusBar: 'black-translucent'
-            },
-            android: {
-                source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
-                themeColor: '#ff8600',
-                backgroundColor: '#ffffff'
-            },
-            windows: {
-                source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
-                tileColor: '#ff8600'
-            }
-        }
+      title: 'Hive Home',
+      prefix: 'static/media/[hash]-',
+      platforms: {
+        generic: {
+          source: path.join(paths.appSrc, 'assets/icons', 'favicon.png'),
+        },
+        ios: {
+          source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
+          statusBar: 'black-translucent',
+        },
+        android: {
+          source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
+          themeColor: '#ff8600',
+          backgroundColor: '#ffffff',
+        },
+        windows: {
+          source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
+          tileColor: '#ff8600',
+        },
+      },
     }),
     // Whitelist `react-intl` language files we know we'll need
     new webpack.ContextReplacementPlugin(
-        /react-intl[/\\]locale-data$/,
-        new RegExp(`^\\.[/\\\\](${languages.join('|')})$`)
+      /react-intl[/\\]locale-data$/,
+      new RegExp(`^\\.[/\\\\](${languages.join('|')})$`)
     ),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({

@@ -21,7 +21,7 @@
     "react-scripts": "./bin/react-scripts.js"
   },
   "dependencies": {
-    "@connected-home/hivehome-webapp-favicons-webpack-plugin": "^1.1.8",
+    "@connected-home/hivehome-webapp-favicons-webpack-plugin": "^3.0.0",
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
