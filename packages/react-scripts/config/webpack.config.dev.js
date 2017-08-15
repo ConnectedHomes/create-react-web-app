@@ -277,7 +277,7 @@ module.exports = {
         generic: {
           source: path.join(paths.appSrc, 'assets/icons', 'favicon.png'),
         },
-        iphone: {
+        ios: {
           source: path.join(paths.appSrc, 'assets/icons', 'app-icon.png'),
           statusBar: 'black-translucent',
         },
