@@ -144,6 +144,9 @@ if (
     appPublic: resolveOwn('template/public'),
     appHtml: resolveOwn('template/public/index.html'),
     appIndexJs: resolveModule(resolveOwn, 'template/src/index'),
+    appBrowserUpdateJs: resolveOwn(
+      'template/src/assets/scripts/browser-detect.js'
+    ),
     appPackageJson: resolveOwn('package.json'),
     appSrc: resolveOwn('template/src'),
     appTsConfig: resolveOwn('template/tsconfig.json'),
