@@ -11,12 +11,21 @@ const LOCALE_DIR = paths.appIntl;
 // concerned with. As we add translations for different languages we'll automatically have
 // the right data to help with whitelisting those languages/locales in npm modules.
 
+if (!LOCALE_DIR) {
+  module.exports = {
+    locales: [],
+    languages: [],
+  };
+
+  return;
+}
+
 const locales = [
-    DEFAULT_LOCALE,
-    ...fs.readdirSync(LOCALE_DIR).map(f => path.basename(f, path.extname(f))) // fr-ca.json -> fr-ca
+  DEFAULT_LOCALE,
+  ...fs.readdirSync(LOCALE_DIR).map(f => path.basename(f, path.extname(f))), // fr-ca.json -> fr-ca
 ];
 
 module.exports = {
-    locales,
-    languages: locales.map(l => l.replace(/(-.*)$/, '')) // en-gb -> en
+  locales,
+  languages: locales.map(l => l.replace(/(-.*)$/, '')), // en-gb -> en
 };
