@@ -113,6 +113,9 @@ if (
     appPublic: resolveOwn('template/public'),
     appHtml: resolveOwn('template/public/index.html'),
     appIndexJs: resolveOwn('template/src/index.js'),
+    appBrowserUpdateJs: resolveOwn(
+      'template/src/assets/scripts/browser-detect.js'
+    ),
     appPackageJson: resolveOwn('package.json'),
     appSrc: resolveOwn('template/src'),
     yarnLockFile: resolveOwn('template/yarn.lock'),
