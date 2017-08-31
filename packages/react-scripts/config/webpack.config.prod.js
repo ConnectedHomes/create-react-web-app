@@ -306,6 +306,9 @@ module.exports = {
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(
       Object.assign({}, env.stringified, {
+        'process.env.BUILD_NUMBER': JSON.stringify(
+          process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER || '----'
+        ),
         'process.locales': JSON.stringify(locales),
       })
     ),
