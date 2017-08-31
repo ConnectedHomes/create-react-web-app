@@ -29,13 +29,13 @@ describe('Integration', () => {
       );
     });
 
-    it('no ext inclusion', async () => {
-      const doc = await initDOM('no-ext-inclusion');
-
-      expect(doc.getElementById('feature-no-ext-inclusion').href).to.match(
-        /\/static\/media\/aFileWithoutExt\.[a-f0-9]{8}\.bin$/
-      );
-    });
+    // it('no ext inclusion', async () => {
+    //   const doc = await initDOM('no-ext-inclusion');
+    //
+    //   expect(doc.getElementById('feature-no-ext-inclusion').href).to.match(
+    //     /\/static\/media\/aFileWithoutExt\.[a-f0-9]{8}\.bin$/
+    //   );
+    // });
 
     it('json inclusion', async () => {
       const doc = await initDOM('json-inclusion');
@@ -61,12 +61,12 @@ describe('Integration', () => {
       );
     });
 
-    it('unknown ext inclusion', async () => {
-      const doc = await initDOM('unknown-ext-inclusion');
-
-      expect(doc.getElementById('feature-unknown-ext-inclusion').href).to.match(
-        /\/static\/media\/aFileWithExt\.[a-f0-9]{8}\.unknown$/
-      );
-    });
+    // it('unknown ext inclusion', async () => {
+    //   const doc = await initDOM('unknown-ext-inclusion');
+    //
+    //   expect(doc.getElementById('feature-unknown-ext-inclusion').href).to.match(
+    //     /\/static\/media\/aFileWithExt\.[a-f0-9]{8}\.unknown$/
+    //   );
+    // });
   });
 });
