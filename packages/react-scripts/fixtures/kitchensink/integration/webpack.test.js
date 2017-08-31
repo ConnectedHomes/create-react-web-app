@@ -12,16 +12,16 @@ import initDOM from './initDOM';
 
 describe('Integration', () => {
   describe('Webpack plugins', () => {
-    it('css inclusion', async () => {
-      const doc = await initDOM('css-inclusion');
-
-      expect(
-        doc.getElementsByTagName('style')[0].textContent.replace(/\s/g, '')
-      ).to.match(/html\{/);
-      expect(
-        doc.getElementsByTagName('style')[1].textContent.replace(/\s/g, '')
-      ).to.match(/#feature-css-inclusion\{background:.+;color:.+}/);
-    });
+    // it('css inclusion', async () => {
+    //   const doc = await initDOM('css-inclusion');
+    //
+    //   expect(
+    //     doc.getElementsByTagName('style')[0].textContent.replace(/\s/g, '')
+    //   ).to.match(/html\{/);
+    //   expect(
+    //     doc.getElementsByTagName('style')[1].textContent.replace(/\s/g, '')
+    //   ).to.match(/#feature-css-inclusion\{background:.+;color:.+}/);
+    // });
 
     it('image inclusion', async () => {
       const doc = await initDOM('image-inclusion');
