@@ -270,6 +270,10 @@ module.exports = {
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
     new webpack.DefinePlugin(
       Object.assign({}, env.stringified, {
+        // Currently builds may run in both travis and jenkins env
+        'process.env.BUILD_NUMBER': JSON.stringify(
+          process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER || '----'
+        ),
         'process.locales': JSON.stringify(locales),
       })
     ),
