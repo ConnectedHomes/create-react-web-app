@@ -381,7 +381,7 @@ module.exports = {
       // used to populate the caches, to ensure the responses are fresh.
       // If a URL is already hashed by Webpack, then there is no concern
       // about it being stale, and the cache-busting can be skipped.
-      dontCacheBustUrlsMatching: /\.\w{64}\./,
+      dontCacheBustUrlsMatching: /./,
       filename: 'service-worker.js',
       logger(message) {
         if (message.indexOf('Total precache size is') === 0) {
