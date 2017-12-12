@@ -43,7 +43,6 @@
     "object-assign": "4.1.1",
     "postcss-cssnext": "^3.0.2",
     "postcss-flexbugs-fixes": "3.2.0",
-    "postcss-grid-fluid": "^0.1.17",
     "postcss-import": "^10.0.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
