@@ -10,7 +10,6 @@
 
 const cssnext = require('postcss-cssnext');
 const cssimport = require('postcss-import');
-const cssFluidGrid = require('postcss-grid-fluid');
 
 const HivehomeWebappFaviconsWebpackPlugin = require('@connected-home/hivehome-webapp-favicons-webpack-plugin');
 
@@ -220,7 +219,6 @@ module.exports = {
                         'not ie < 9', // React doesn't support IE8 anyway
                       ],
                     }),
-                    cssFluidGrid(),
                     require('postcss-flexbugs-fixes'),
                   ],
                 },
