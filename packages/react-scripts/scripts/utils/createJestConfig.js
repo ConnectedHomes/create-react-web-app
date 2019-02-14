@@ -62,6 +62,7 @@ module.exports = (resolve, rootDir, isEjecting) => {
       'jest-watch-typeahead/filename',
       'jest-watch-typeahead/testname',
     ],
+    modulePathIgnorePatterns: ["<rootDir>/src/core/*"],
   };
   if (rootDir) {
     config.rootDir = rootDir;
