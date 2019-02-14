@@ -55,6 +55,7 @@ module.exports = (resolve, rootDir, isEjecting) => {
       'node',
       'mjs',
     ],
+    modulePathIgnorePatterns: ["<rootDir>/src/core/*"],
   };
   if (rootDir) {
     config.rootDir = rootDir;
