@@ -37,6 +37,8 @@ const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 // @remove-on-eject-end
 const postcssNormalize = require('postcss-normalize');
 
+const { languages, locales } = require('./locales');
+
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
@@ -155,6 +157,7 @@ module.exports = function(webpackEnv) {
         require.resolve('react-dev-utils/webpackHotDevClient'),
       // Finally, this is your app's code:
       paths.appIndexJs,
+      paths.appBrowserUpdateJs,
       // We include the app code last so that if there is a runtime error during
       // initialization, it doesn't blow up the WebpackDevServer client, and
       // changing JS code would still trigger a refresh.
@@ -361,7 +364,7 @@ module.exports = function(webpackEnv) {
                   'babel-preset-react-app/webpack-overrides'
                 ),
                 // @remove-on-eject-begin
-                babelrc: false,
+                babelrc: true,
                 configFile: false,
                 presets: [require.resolve('babel-preset-react-app')],
                 // Make sure we have a unique cache identifier, erring on the
@@ -551,6 +554,22 @@ module.exports = function(webpackEnv) {
               }
             : undefined
         )
+      ),
+      // Makes some environment variables available to the JS code, for example:
+      // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
+      new webpack.DefinePlugin(
+        Object.assign({}, env.stringified, {
+          // Currently builds may run in both travis and jenkins env
+          'process.env.BUILD_NUMBER': JSON.stringify(
+            process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER || '----'
+          ),
+          'process.locales': JSON.stringify(locales),
+        })
+      ),
+      // Whitelist `react-intl` language files we know we'll need
+      new webpack.ContextReplacementPlugin(
+        /react-intl[/\\]locale-data$/,
+        new RegExp(`^\\.[/\\\\](${languages.join('|')})$`)
       ),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
