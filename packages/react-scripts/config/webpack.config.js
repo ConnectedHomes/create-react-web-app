@@ -105,6 +105,7 @@ module.exports = function(webpackEnv) {
           ident: 'postcss',
           plugins: () => [
             require('postcss-flexbugs-fixes'),
+            require('postcss-color-mod-function'),
             require('postcss-preset-env')({
               autoprefixer: {
                 flexbox: 'no-2009',
@@ -561,7 +562,9 @@ module.exports = function(webpackEnv) {
         Object.assign({}, env.stringified, {
           // Currently builds may run in both travis and jenkins env
           'process.env.BUILD_NUMBER': JSON.stringify(
-            process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER || '----'
+            process.env.TRAVIS_BUILD_NUMBER ||
+              process.env.BUILD_NUMBER ||
+              '----'
           ),
           'process.locales': JSON.stringify(locales),
         })
