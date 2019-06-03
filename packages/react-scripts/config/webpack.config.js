@@ -105,10 +105,12 @@ module.exports = function(webpackEnv) {
           ident: 'postcss',
           plugins: () => [
             require('postcss-flexbugs-fixes'),
-            require('postcss-color-mod-function'),
             require('postcss-preset-env')({
               autoprefixer: {
                 flexbox: 'no-2009',
+              },
+              features: {
+                'color-mod-function': { unresolved: 'ignore' },
               },
               stage: 3,
             }),
